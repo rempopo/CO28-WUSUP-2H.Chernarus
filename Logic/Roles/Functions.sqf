@@ -36,17 +36,14 @@ dzn_fnc_roles_processAssignments = {
 		private _player = objNull;
 		
 		if (_role in ["AR","R"]) then {
-			_player = ALT_SELECT_UNIT(_newbies,_regulars);	
-			PL = _player; RG = _regulars; AP = _allPlayers; I = _i;T = [PL, RG, AP, I];
+			_player = ALT_SELECT_UNIT(_newbies,_regulars);				
 		} else {
 			if NO_UNITS(_regulars) then {
 				_skip = true;
 				if (_i == (_maxRoleNumber - 1)) exitWith { _i = 100; };
 				_i = _i - 1;
-				PL = _player; RG = _regulars; AP = _allPlayers; I = _i;T = [PL, RG, AP, I];
 			} else {
 				_player = selectRandom _regulars;
-				PL = _player; RG = _regulars; AP = _allPlayers; I = _i;T = [PL, RG, AP, I];
 			};
 		};
 		
@@ -129,8 +126,8 @@ dzn_fnc_roles_assignPlayersRole = {
 	/*
 		Join Group
 	*/
-	// _this joinAsSilent [dzn_roles_groups select _squad, _groupPosition];
-	[_this] joinSilent (dzn_roles_groups select _squad);
+	_this joinAsSilent [dzn_roles_groups select _squad, _groupPosition];
+	// [_this] joinSilent (dzn_roles_groups select _squad);
 	if (toLower(_role) == "sl") then {
 		if (!isNil "ace_interaction_fnc_doBecomeLeader") then {
 			[_this] call ace_interaction_fnc_doBecomeLeader;
@@ -141,10 +138,12 @@ dzn_fnc_roles_assignPlayersRole = {
 		Join Team
 	*/
 	if (_team != "") then {
-		if (!isNil "ace_interaction_fnc_joinTeam") then {
-			[_this, toUpper(_team)] call ace_interaction_fnc_joinTeam;
-		} else {
-			_this assignTeam toUpper(_team);
+		[_this, _team, true] call dzn_fnc_roles_handleTeamChangeOnJoin;
+		[_this, _team] spawn {			
+			while { true } do {
+				sleep 1;
+				_this call dzn_fnc_roles_handleTeamChangeOnJoin;
+			};		
 		};
 	};
 	
@@ -212,6 +211,21 @@ dzn_fnc_roles_createGroups = {
 	};
 	
 	publicVariable "dzn_roles_groups";
+};
+
+dzn_fnc_roles_handleTeamChangeOnJoin = {
+	params ["_unit", "_team", ["_forced",false]];
+	
+	if (
+		_forced 
+		|| count (units group _unit) != player getVariable ["roles_lastGroupCount",1]
+	) then {
+		_team = player getVariable ["roles_lastTeam", _team];
+		_unit assignTeam toUpper(_team);
+		
+		player setVariable ["roles_lastTeam", _team];
+		player setVariable ["roles_lastGroupCount", count (units group _unit)];
+	};
 };
 
 dzn_fnc_roles_debug_drawRole = {
