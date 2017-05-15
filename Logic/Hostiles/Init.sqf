@@ -1,4 +1,5 @@
-if !(isServer || isDedicated) exitWith {};
+
+if (hasInterface || (!isNil "HC" && isServer)) exitWith {};
 
 call compile preprocessFileLineNumbers "Logic\Hostiles\Settings.sqf";
 call compile preprocessFileLineNumbers "Logic\Hostiles\Functions.sqf";
