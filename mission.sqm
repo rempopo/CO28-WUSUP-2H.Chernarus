@@ -16,7 +16,7 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=194;
+		nextID=204;
 	};
 	class Camera
 	{
@@ -5774,7 +5774,7 @@ class Mission
 						{
 							dataType="Trigger";
 							position[]={3164.8933,298.93094,7935.25};
-							angle=0.4975169;
+							angle=0.49751675;
 							class Attributes
 							{
 								sizeA=15;

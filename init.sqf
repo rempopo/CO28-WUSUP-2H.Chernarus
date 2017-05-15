@@ -15,3 +15,7 @@ tf_give_microdagr_to_soldier = false;
 [] execVM "dzn_tSFramework\dzn_tSFramework_Init.sqf";
   // dzn AAR
 [] execVM "dzn_brv\dzn_brv_init.sqf";
+
+
+//	LOGIC - Hostiles
+[] execVM "Logic\Hostiles\Init.sqf";
