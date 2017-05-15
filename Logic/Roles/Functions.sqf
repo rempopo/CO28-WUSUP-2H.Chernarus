@@ -138,13 +138,13 @@ dzn_fnc_roles_assignPlayersRole = {
 		Join Team
 	*/
 	if (_team != "") then {
-		[_this, _team, true] call dzn_fnc_roles_handleTeamChangeOnJoin;
-		[_this, _team] spawn {			
-			while { true } do {
-				sleep 1;
-				_this call dzn_fnc_roles_handleTeamChangeOnJoin;
-			};		
-		};
+		// [_this, _team, true] call dzn_fnc_roles_handleTeamChangeOnJoin;
+		// [_this, _team] spawn {			
+			// while { true } do {
+				// sleep 1;
+				// _this call dzn_fnc_roles_handleTeamChangeOnJoin;
+			// };		
+		// };
 	};
 	
 	/*
